@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的-->
+
+<mapper namespace="com.cangqing.spider.mybatis.mapper.BrandCommentMapper">
+
+    <insert id="add" parameterType="BrandSentiment">
+        insert ignore into brand_comment (commenter,comment_date,shop_id,shop_name,comment_content,comment_level)
+        values(#{commenter},#{commentDate},#{shopId},#{shopName},#{commentContent},#{commentLevel})
+    </insert>
+
+
+    <resultMap type="BrandComment" id="brandComment">
+        <id property="id" column="id"/>
+        <id property="commenter" column="commenter"/>
+        <id property="commentDate" column="comment_date"/>
+        <id property="shopId" column="shop_id"/>
+        <id property="shopName" column="shop_name"/>
+        <id property="commentLevel" column="comment_level"/>
+        <id property="commentContent" column="comment_content"/>
+    </resultMap>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的-->
+
+<mapper namespace="com.cangqing.spider.mybatis.mapper.TaxInfoMapper">
+
+    <sql id="queryCondition">
+        <where>
+            <if test="declareYear!=null">
+                and declare_year=#{declareYear}
+            </if>
+            <if test="declareMonth!=null">
+                and declare_month=#{declareMonth}
+            </if>
+            <if test="declareQuarter!=null">
+                and declare_quarter=#{declareQuarter}
+            </if>
+            <if test="taxNo!= '' and taxNo!=null">
+                and enterprise_info.tax_no=#{taxNo}
+            </if>
+            <if test="taxType!=null">
+                and tax_type=#{taxType}
+            </if>
+            <if test="name!= '' and name!=null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="minDiffRate!=null">
+                and diff_rate>=#{minDiffRate}
+            </if>
+            <if test="maxDiffRate!=null">
+                and diff_rate &lt; #{maxDiffRate}
+            </if>
+        </where>
+    </sql>
+
+    <select id="find" parameterType="map" resultType="map">
+        select enterprise_info.tax_no taxNo,name,tax_type taxType,declare_year declareYear,declare_month declareMonth,
+        declare_quarter declareQuarter,collect_amount collectAmount,tax_amount taxAmount,duty_free_amount
+        dutyFreeAmount,
+        diff_amount diffAmount,diff_rate diffRate from enterprise_info join tax_info on
+        tax_info.tax_no=enterprise_info.tax_no
+        <include refid="queryCondition"></include>
+        limit #{offset},#{size};
+    </select>
+
+    <select id="count" parameterType="map" resultType="int">
+        select count(1) from enterprise_info join tax_info on
+        tax_info.tax_no=enterprise_info.tax_no
+        <include refid="queryCondition"></include>
+    </select>
+</mapper>

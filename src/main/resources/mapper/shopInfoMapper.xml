@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cangqing.spider.mybatis.mapper.ShopInfoMapper">
+
+    <insert id="add" parameterType="ShopInfo">
+        INSERT into shop_info (brand_name,mall_id,city,address,category,branch_name,avg_price,defaultPicKey,glat,quality,environment,service,glng,phoneNo,score,shop_id)
+        values(#{brandName},#{mallId},#{city},#{address},#{category},#{branchName},#{avgPrice},#{defaultPicKey},#{glat},#{quality},#{environment},#{service},#{glng},#{phoneNo},#{score},#{shopId})
+        on duplicate key update mall_id=VALUES (mall_id),category=VALUES (category),defaultPicKey=VALUES (defaultPicKey),score=VALUES (score),shop_id=VALUES (shop_id),avg_price=VALUES (avg_price)
+    </insert>
+
+
+    <select id="findByShopId" parameterType="string" resultMap="shopInfo">
+        select * from shop_info where shop_id=#{shopId}
+    </select>
+
+    <select id="findByShopIdList" parameterType="list" resultMap="shopInfo">
+        select * from shop_info where shop_id in
+        <foreach collection="list" index="index" item="shopId" open="("
+                 separator="," close=")">
+            #{shopId}
+        </foreach>
+    </select>
+
+    <update id="updateByShopId" parameterType="map">
+        update shop_info set mall_id=#{mallId} where shop_id in
+        <foreach collection="shopIdList" index="index" item="shopId" open="("
+                 separator="," close=")">
+            #{shopId}
+        </foreach>
+    </update>
+
+    <select id="findAll" parameterType="map" resultMap="shopInfo">
+        select * from shop_info limit #{offset},#{size}
+    </select>
+
+    <resultMap type="ShopInfo" id="shopInfo">
+        <id property="brandName" column="brand_name"/>
+        <id property="branchName" column="branch_name"/>
+        <id property="city" column="city"/>
+        <id property="mallId" column="mall_id"/>
+        <id property="address" column="address"/>
+        <id property="category" column="category"/>
+        <id property="avgPrice" column="avg_price"/>
+        <id property="defaultPicKey" column="defaultPicKey"/>
+        <id property="quality" column="quality"/>
+        <id property="environment" column="environment"/>
+        <id property="service" column="service"/>
+        <id property="phoneNo" column="phoneNo"/>
+        <id property="glng" column="glng"/>
+        <id property="glat" column="glat"/>
+        <id property="score" column="score"/>
+        <id property="shopId" column="shop_id"/>
+    </resultMap>
+</mapper>

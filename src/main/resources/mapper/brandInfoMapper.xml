@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的-->
+
+<mapper namespace="com.cangqing.spider.mybatis.mapper.BrandInfoMapper">
+
+    <select id="find" parameterType="map" resultMap="brandInfo">
+        SELECT * from brand_info
+        <where>
+            <if test="name!=null">
+                name=#{name}
+            </if>
+        </where>
+        limit #{offset},#{size};
+    </select>
+
+    <select id="findByName" parameterType="string" resultMap="brandInfo">
+        SELECT * from brand_info  where replace(name,' ','')=#{name} or name=#{name} limit 1
+    </select>
+
+    <select id="findById" parameterType="string" resultMap="brandInfo">
+        SELECT * from brand_info  where id=#{id}
+    </select>
+
+    <select id="findAllByFlag" parameterType="int" resultMap="brandInfo">
+        SELECT * from brand_info  where flag=#{flag} limit 27,1500
+    </select>
+
+    <update id="setFlagByName" parameterType="string">
+        update brand_info  set flag=1 where replace(name,' ','')=#{name} or name=#{name} limit 1
+    </update>
+
+    <insert id="add" parameterType="BrandInfo">
+        replace into brand_info (name,company_name,shop_num,area_required,brand_intro,period,logo,shop_mode,mean_price,found_year,category,front_pics)
+        values(#{name},#{companyName},#{shopNum},#{areaRequired},#{brandIntro},#{period},#{logo},#{shopMode},#{meanPrice},#{foundYear},#{category},#{frontPics})
+    </insert>
+
+
+    <resultMap type="BrandInfo" id="brandInfo">
+        <id property="name" column="name"/>
+        <id property="companyName" column="company_name"/>
+        <id property="logo" column="logo"/>
+        <id property="shopNum" column="shop_num"/>
+        <id property="meanPrice" column="mean_price"/>
+        <id property="foundYear" column="found_year"/>
+        <id property="category" column="category"/>
+        <id property="frontPics" column="front_pics"/>
+        <id property="brandIntro" column="brand_intro"/>
+        <id property="areaRequired" column="area_required"/>
+        <id property="period" column="period"/>
+    </resultMap>
+</mapper>

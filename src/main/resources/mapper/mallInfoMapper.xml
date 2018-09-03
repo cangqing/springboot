@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cangqing.spider.mybatis.mapper.MallInfoMapper">
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="MallInfo">
+        REPLACE  into mall_info (name,mall_id,full_name,branch,address,city,brand_num,category,quality,environment,service,position,mall_pic)
+        values(#{name},#{mallId},#{fullName},#{branch},#{address},#{city},#{brandNum},#{category},#{quality},#{environment},#{service},#{position},#{mallPic})
+    </insert>
+
+
+    <resultMap type="MallInfo" id="mallInfo">
+        <id property="id" column="id"/>
+        <id property="mallId" column="mall_id"/>
+        <id property="name" column="name"/>
+        <id property="fullName" column="full_name"/>
+        <id property="branch" column="branch"/>
+        <id property="brandNum" column="brand_num"/>
+        <id property="address" column="address"/>
+        <id property="city" column="city"/>
+        <id property="category" column="category"/>
+        <id property="quality" column="quality"/>
+        <id property="environment" column="environment"/>
+        <id property="service" column="service"/>
+        <id property="position" column="position"/>
+        <id property="mallPic" column="mall_pic"/>
+    </resultMap>
+</mapper>

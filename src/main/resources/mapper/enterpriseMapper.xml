@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的-->
+
+<mapper namespace="com.cangqing.spider.mybatis.mapper.EnterpriseMapper">
+
+    <select id="find" parameterType="map" resultMap="enterpriseInfo">
+        SELECT * from enterprise_info  limit #{offset},#{size};
+    </select>
+
+    <insert id="add" parameterType="EnterpriseInfo">
+        INSERT ignore into enterprise_info (name,tax_no)
+        values(#{name},#{taxNo})
+    </insert>
+
+    <update id="updateFlag" parameterType="string">
+        update enterprise_info set flag=2 where id=#{id}
+    </update>
+
+    <update id="update" parameterType="EnterpriseInfo">
+        update enterprise_info set cust_tax_no=#{custTaxNo},address=#{address},telephone=#{telephone},cust_bank=#{custBank} where id=#{id}
+    </update>
+
+    <resultMap type="EnterpriseInfo" id="enterpriseInfo">
+        <id property="id" column="id"/>
+        <id property="entName" column="name"/>
+        <id property="custTaxNo" column="cust_tax_no"/>
+    </resultMap>
+</mapper>
